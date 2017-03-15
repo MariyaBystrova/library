@@ -11,13 +11,10 @@ import com.epam.library.dao.BookOperationDAO;
 import com.epam.library.dao.connectionpool.ConnectionPool;
 import com.epam.library.dao.connectionpool.exception.ConnectionPoolException;
 import com.epam.library.dao.exception.DAOException;
+import com.epam.library.dao.impl.util.BookQuery;
 import com.epam.library.domain.Book;
 
 public class SQLBookOperationDAO implements BookOperationDAO {
-	public final static String INSERT_INTO_BOOK = "INSERT INTO `book_library`.`book` (`title`,`publish_year`,`author`, `brief`) VALUES (?,?,?,?);";
-	public final static String SELECT_FROM_BOOK_BY_TITLE = "SELECT b.`title`, b.`publish_year`, b.`author`, b.`brief` FROM `book` AS b WHERE b.`title` = ?;";
-	public final static String DELETE_BOOK_BY_TITLE = "DELETE FROM `book` WHERE `title` = ?;";
-	public final static String UPDATE_BOOK_TITLE = "UPDATE `book` AS b JOIN (SELECT ? AS old_title, ? AS new_title) AS q ON b.`title` = q.old_title SET b.`title` = q.new_title;";
 
 	@Override
 	public boolean createBook(Book book) throws DAOException {
@@ -25,7 +22,7 @@ public class SQLBookOperationDAO implements BookOperationDAO {
 		java.sql.Connection con = null;
 		try {
 			con = connectionPool.takeConnection();
-			try (PreparedStatement ps = con.prepareStatement(INSERT_INTO_BOOK)) {
+			try (PreparedStatement ps = con.prepareStatement(BookQuery.INSERT_INTO_BOOK)) {
 				ps.setString(1, book.getTitle());
 				ps.setString(2, book.getPublishYear());
 				ps.setString(3, book.getAuthor());
@@ -54,7 +51,7 @@ public class SQLBookOperationDAO implements BookOperationDAO {
 		try {
 			con = connectionPool.takeConnection();
 			try (Statement s = con.createStatement()) {
-				try (PreparedStatement ps = con.prepareStatement(SELECT_FROM_BOOK_BY_TITLE)) {
+				try (PreparedStatement ps = con.prepareStatement(BookQuery.SELECT_FROM_BOOK_BY_TITLE)) {
 					ps.setString(1, title);
 					ResultSet rs = ps.executeQuery();
 					while (rs.next()) {
@@ -80,7 +77,7 @@ public class SQLBookOperationDAO implements BookOperationDAO {
 
 		try {
 			con = connectionPool.takeConnection();
-			try (PreparedStatement ps = con.prepareStatement(DELETE_BOOK_BY_TITLE)) {
+			try (PreparedStatement ps = con.prepareStatement(BookQuery.DELETE_BOOK_BY_TITLE)) {
 				ps.setString(1, title);
 				int rows = ps.executeUpdate();
 
@@ -106,7 +103,7 @@ public class SQLBookOperationDAO implements BookOperationDAO {
 
 		try {
 			con = connectionPool.takeConnection();
-			try (PreparedStatement ps = con.prepareStatement(UPDATE_BOOK_TITLE)) {
+			try (PreparedStatement ps = con.prepareStatement(BookQuery.UPDATE_BOOK_TITLE)) {
 				ps.setString(1, oldTitle);
 				ps.setString(2, newTitle);
 

@@ -10,9 +10,9 @@ import com.epam.library.dao.BookEmployeeOperationDAO;
 import com.epam.library.dao.connectionpool.ConnectionPool;
 import com.epam.library.dao.connectionpool.exception.ConnectionPoolException;
 import com.epam.library.dao.exception.DAOException;
+import com.epam.library.dao.impl.util.BookEmployeeQuery;
 
 public class SQLBookEmployeeOperationDAO implements BookEmployeeOperationDAO {
-	public final static String INSERT_INTO_EMPLOYEE_BOOK = "INSERT INTO `employee_book`(`book_id`,`employee_id`,`id`) VALUES(?,?,?);";
 
 	private Set<Pair> pairSet = new HashSet<>();
 
@@ -31,7 +31,7 @@ public class SQLBookEmployeeOperationDAO implements BookEmployeeOperationDAO {
 			con = connectionPool.takeConnection();
 
 			for (int i = 1; i <= 100; i++) {
-				try (PreparedStatement ps = con.prepareStatement(INSERT_INTO_EMPLOYEE_BOOK)) {
+				try (PreparedStatement ps = con.prepareStatement(BookEmployeeQuery.INSERT_INTO_EMPLOYEE_BOOK)) {
 					Random r = new Random();
 					int bookId;
 					int employeeId;

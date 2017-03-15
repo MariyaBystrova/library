@@ -67,7 +67,7 @@ public class View {
 		request = new Request();
 		request.setCommandName(CommandName.RENAME_BOOK);
 		request.setParameter("oldTitle", "Java in action 3-d edition");
-		request.setParameter("newTitle", "AAA");
+		request.setParameter("newTitle", "Java in action 3-d edition-1");
 
 		response = controller.doAction(request);
 		logger.info(response.getMessage());
