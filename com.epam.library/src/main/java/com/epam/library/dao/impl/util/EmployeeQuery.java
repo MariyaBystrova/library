@@ -15,6 +15,6 @@ public class EmployeeQuery {
 																						+ "LEFT JOIN `employee_book` AS eb ON eb.`employee_id` = e.`id` "
 																						+ "GROUP BY eb.`employee_id` , e.`name`, e.`date_of_birth`, e.`email` "
 																						+ "HAVING COUNT(*)<=2 "
-																						+ "ORDER BY e.`date_of_birth`, COUNT(*)  DESC;;";
+																						+ "ORDER BY e.`date_of_birth`, COUNT(*)  DESC;";
 
 }
