@@ -3,7 +3,6 @@ package com.epam.library.dao.impl;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,14 +49,12 @@ public class SQLBookOperationDAO implements BookOperationDAO {
 		List<Book> list = new ArrayList<>();
 		try {
 			con = connectionPool.takeConnection();
-			try (Statement s = con.createStatement()) {
-				try (PreparedStatement ps = con.prepareStatement(BookQuery.SELECT_FROM_BOOK_BY_TITLE)) {
-					ps.setString(1, title);
-					ResultSet rs = ps.executeQuery();
-					while (rs.next()) {
-						Book book = new Book(rs.getString(1), rs.getString(3), rs.getString(4), rs.getString(2));
-						list.add(book);
-					}
+			try (PreparedStatement ps = con.prepareStatement(BookQuery.SELECT_FROM_BOOK_BY_TITLE)) {
+				ps.setString(1, title);
+				ResultSet rs = ps.executeQuery();
+				while (rs.next()) {
+					Book book = new Book(rs.getString(1), rs.getString(3), rs.getString(4), rs.getString(2));
+					list.add(book);
 				}
 			} catch (SQLException e) {
 				throw new DAOException("Database access error.", e);
